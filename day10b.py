@@ -20,18 +20,21 @@ def flood(x, y):
 				x = x + d[char][1][0]
 				y = y + d[char][1][1]
 
-def vertical_parity(x, y, lines):
-	p = 0
-	for i in range(y):
-		if lines[i][x] in ['F', 'J']:
-			p += 0.5
-		if lines[i][x] in ['7', 'L']:
-			p -= 0.5
-		if lines[i][x] == '-':
-			p += 1
-	return int(p) % 2
-
-def horizontal_parity(x, y, lines):
+# whether something is inside the loop depends solely on the number of lines you cross
+# to get to that space, consider the example:
+# ...........
+# .S-------7.
+# .|F-----7|.
+# .||.....||.
+# .||.....||.
+# .|L-7.F-J|.
+# .|A.|B|..|.
+# .L--J.L--J.
+# ...........
+# when we cross over one line from the left we're inside the loop (look at A)--
+# one more and we're outside (look at B)- try it yourself on paper with an arbitrary (non self intersecting) loop!
+# below adds some extra details to deal with bends 
+def horizontal_crossings(x, y, lines):
 	p = 0
 	for i in range(x):
 		if lines[y][i] in ['F', 'J']:
@@ -42,9 +45,9 @@ def horizontal_parity(x, y, lines):
 			p += 1
 	return int(p) % 2
 
-# many thanks to my knot theory class
+# many thanks to my knot theory class :)
 def in_loop(x, y, lines):
-	return vertical_parity(x, y, lines) + horizontal_parity(x, y, lines) == 2
+	return horizontal_crossings(x, y, lines) == 1
 
 
 f = open('input.txt', 'r')
