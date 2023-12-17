@@ -5,7 +5,6 @@ patterns = [list(map(list, line.split('\n'))) for line in lines]
 def transpose(m):
 	return [[m[j][i] for j in range(len(m))] for i in range(len(m[0]))]
 
-
 # given y check that all rows [0...y] match rows [y+1...n]
 def check_h_reflection(m, y):
 	i = 0
